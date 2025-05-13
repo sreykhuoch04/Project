@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4 fw-semibold">Add New Product</h2>
+<form action="/add" method="POST" class="p-4 border rounded bg-light">
+  <div class="mb-3">
+    <label for="name" class="form-label">Product Name</label>
+    <input type="text" name="name" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label for="price" class="form-label">Price</label>
+    <input type="number" step="0.01" name="price" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label for="quantity" class="form-label">Quantity</label>
+    <input type="number" name="quantity" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label for="image" class="form-label">Image URL</label>
+    <input type="url" name="image" class="form-control" id="imageInput">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Image Preview:</label><br>
+    <img id="imagePreview" src="/static/no-image.jpg" alt="Preview" style="width: 200px; height: 200px; object-fit: cover;">
+  </div>
+  <button type="submit" class="btn btn-success">Add Product</button>
+</form>
+
+<script>
+  const imageInput = document.getElementById('imageInput');
+  const preview = document.getElementById('imagePreview');
+
+  imageInput.addEventListener('input', function() {
+    const url = imageInput.value;
+    preview.src = url || "/static/no-image.jpg";
+  });
+</script>
+{% endblock %}

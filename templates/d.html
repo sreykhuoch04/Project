@@ -1,0 +1,172 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .hero-section {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        overflow: hidden;
+    }
+
+    .video-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
+
+    .overlay {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(8px);
+        padding: 3rem;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        max-width: 800px;
+        width: 90%;
+    }
+
+    .btn-primary {
+        background-color: #ff69b4;
+        border: none;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #ff85c1;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+    }
+
+    .product-highlights {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+
+    .product-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        width: 120px;
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .product-card img {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        margin-bottom: 10px;
+    }
+
+    h1 {
+        animation: fadeInDown 1s ease;
+        font-size: 2.8rem;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    p {
+        animation: fadeInUp 1s ease;
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+        .overlay {
+            padding: 2rem 1rem;
+        }
+        h1 {
+            font-size: 2rem;
+        }
+        p {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<div class="hero-section">
+    <!-- Skincare-related video background -->
+    <video autoplay muted loop playsinline class="video-background">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-hands-applying-cream-on-a-womans-face-39840-large.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <div class="overlay">
+        <h1 class="display-4 fw-bold">Glow With Our Skincare Collection</h1>
+        <p class="lead mt-3">Discover scientifically-backed formulas for radiant, healthy skin. Professional results at home.</p>
+        <!-- <a href="/products" class="btn btn-primary btn-lg mt-2">Shop Now</a> -->
+
+        <a href="/login" class="btn btn-primary btn-lg mt-4">Get Started</a>
+        <div class="product-highlights">
+            <div class="product-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081479.png" alt="Cleanser">
+                <div>Cleansers</div>
+            </div>
+            <div class="product-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081489.png" alt="Serum">
+                <div>Serums</div>
+            </div>
+            <div class="product-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081523.png" alt="Moisturizer">
+                <div>Moisturizers</div>
+            </div>
+            <div class="product-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081495.png" alt="Sunscreen">
+                <div>Sun Care</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Video autoplay fallback and mobile handling
+    document.addEventListener('DOMContentLoaded', function() {
+        const video = document.querySelector('.video-background');
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        if (video) {
+            // For mobile, we might want to show a poster image instead
+            if (isMobile) {
+                video.setAttribute('poster', 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881');
+                video.controls = false;
+            }
+            
+            const playPromise = video.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    video.controls = true;
+                    console.log('Video playback prevented:', error);
+                });
+            }
+        }
+    });
+</script>
+{% endblock %}
