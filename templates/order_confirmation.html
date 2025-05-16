@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="confirmation-container">
+    <div class="confirmation-message">
+        <h1>Thank You for Your Order!</h1>
+        <p>Your order has been placed successfully.</p>
+        <p>Order Number: <strong>#{{ order.order_id }}</strong></p>
+        <p>Total Amount: <strong>${{ "%.2f"|format(order.total_amount) }}</strong></p>
+        
+        <div class="confirmation-actions">
+            <a href="/products" class="btn">Continue Shopping</a>
+            <a href="/orders/view/{{ order.order_id }}" class="btn">View Order Details</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

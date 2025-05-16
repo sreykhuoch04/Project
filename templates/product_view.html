@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="product-detail">
+    <div class="product-images">
+        {% if product.image %}
+        <img src="{{ url_for('static', filename='uploads/' + product.image) }}" alt="{{ product.product_name }}">
+        {% else %}
+        <div class="no-image">No Image</div>
+        {% endif %}
+    </div>
+    
+    <div class="product-info">
+        <h1>{{ product.product_name }}</h1>
+        <p class="brand">Brand: {{ product.brand }}</p>
+        <p class="category">Category: {{ product.category }}</p>
+        <p class="price">Price: ${{ "%.2f"|format(product.price) }}</p>
+        <p class="stock {% if product.stock_quantity <= 0 %}out-of-stock{% endif %}">
+            {% if product.stock_quantity > 0 %}
+                {{ product.stock_quantity }} in stock
+            {% else %}
+                Out of stock
+            {% endif %}
+        </p>
+        
+        <div class="product-description">
+            <h3>Description</h3>
+            <p>{{ product.description }}</p>
+        </div>
+        
+        {% if product.stock_quantity > 0 %}
+        <form action="/cart/add" method="POST" class="add-to-cart">
+            <input type="hidden" name="product_id" value="{{ product.product_id }}">
+            <div class="quantity-selector">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ product.stock_quantity }}">
+            </div>
+            <button type="submit" class="btn">Add to Cart</button>
+        </form>
+        {% endif %}
+        
+        <a href="/products" class="btn">Back to Products</a>
+    </div>
+</div>
+{% endblock %}

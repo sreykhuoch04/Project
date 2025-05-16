@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ action }} Customer</h1>
+
+<form method="POST">
+    <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" name="full_name" value="{{ customer.full_name if customer }}" required>
+    </div>
+    
+    <div class="form-group">
+        <label>Phone</label>
+        <input type="text" name="phone" value="{{ customer.phone if customer }}" required>
+    </div>
+    
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" value="{{ customer.email if customer }}" required>
+    </div>
+    
+    <div class="form-group">
+        <label>Address</label>
+        <textarea name="address">{{ customer.address if customer }}</textarea>
+    </div>
+    
+    <div class="form-group">
+        <label>Date of Birth</label>
+        <input type="date" name="date_of_birth" value="{{ customer.date_of_birth if customer }}">
+    </div>
+    
+    <div class="form-group">
+        <label>Skin Type</label>
+        <select name="skin_type">
+            <option value="Oily" {% if customer and customer.skin_type == 'Oily' %}selected{% endif %}>Oily</option>
+            <option value="Dry" {% if customer and customer.skin_type == 'Dry' %}selected{% endif %}>Dry</option>
+            <option value="Combination" {% if customer and customer.skin_type == 'Combination' %}selected{% endif %}>Combination</option>
+            <option value="Normal" {% if customer and customer.skin_type == 'Normal' %}selected{% endif %}>Normal</option>
+            <option value="Sensitive" {% if customer and customer.skin_type == 'Sensitive' %}selected{% endif %}>Sensitive</option>
+        </select>
+    </div>
+    
+    <button type="submit" class="btn">Save</button>
+</form>
+{% endblock %}

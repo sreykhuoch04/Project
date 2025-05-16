@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Order Details #{{ order.order_id }}</h1>
+
+<div class="order-header">
+    <p><strong>Date:</strong> {{ order.order_date }}</p>
+    <p><strong>Customer:</strong> {{ order.customer_name }} ({{ order.customer_phone }})</p>
+    <p><strong>Staff:</strong> {{ order.staff_name }}</p>
+    <p><strong>Total Amount:</strong> ${{ "%.2f"|format(order.total_amount) }}</p>
+</div>
+
+<h3>Order Items</h3>
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.product_name }}</td>
+            <td>{{ item.brand }}</td>
+            <td>${{ "%.2f"|format(item.price) }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ "%.2f"|format(item.price * item.quantity) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
