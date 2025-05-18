@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Create New Order</h1>
+
+<form method="POST" action="/order/create">
+    <div class="form-section">
+        <h2>Customer Information</h2>
+        <div class="form-group">
+            <label for="customer_id">Customer:</label>
+            <select name="customer_id" id="customer_id" required>
+                <option value="">Select a customer</option>
+                {% for customer in customers %}
+                <option value="{{ customer.customer_id }}">{{ customer.full_name }}</option>
+                {% endfor %}
+            </select>
+            <a href="/customer/add" class="btn-sm">Add New Customer</a>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h2>Order Date</h2>
+        <div class="form-group">
+            <input type="date" name="order_date" value="{{ today }}" required>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h2>Order Items</h2>
+        <div id="order-items">
+            <div class="order-item">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Product</label>
+                        <select name="product_id[]" class="product-select" required>
+                            <option value="">Select a product</option>
+                            {% for product in products %}
+                            <option value="{{ product.product_id }}" 
+                                    data-price="{{ product.price }}"
+                                    data-stock="{{ product.stock_quantity }}">
+                                {{ product.product_name }} - ${{ "%.2f"|format(product.price) }} ({{ product.stock_quantity }} in stock)
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" name="quantity[]" min="1" value="1" class="quantity-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input type="text" class="price-display" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Subtotal</label>
+                        <input type="text" class="subtotal-display" readonly>
+                    </div>
+                    <button type="button" class="btn-sm danger remove-item">Remove</button>
+                </div>
+            </div>
+        </div>
+        <button type="button" id="add-item" class="btn">Add Another Item</button>
+    </div>
+
+    <div class="form-section">
+        <h2>Order Summary</h2>
+        <div class="form-group">
+            <label>Total Amount:</label>
+            <input type="text" id="total-amount" name="total_amount" readonly>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn primary">Create Order</button>
+        <a href="/orders" class="btn">Cancel</a>
+    </div>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add new item row
+    document.getElementById('add-item').addEventListener('click', function() {
+        const newItem = document.querySelector('.order-item').cloneNode(true);
+        newItem.querySelectorAll('input').forEach(input => input.value = '');
+        newItem.querySelector('.product-select').selectedIndex = 0;
+        newItem.querySelector('.quantity-input').value = 1;
+        newItem.querySelector('.price-display').value = '';
+        newItem.querySelector('.subtotal-display').value = '';
+        document.getElementById('order-items').appendChild(newItem);
+        attachItemEvents(newItem);
+    });
+
+    // Attach events to initial item
+    document.querySelectorAll('.order-item').forEach(item => {
+        attachItemEvents(item);
+    });
+
+    function attachItemEvents(item) {
+        // Product selection change
+        item.querySelector('.product-select').addEventListener('change', function() {
+            const price = this.options[this.selectedIndex].dataset.price || '0';
+            item.querySelector('.price-display').value = '$' + parseFloat(price).toFixed(2);
+            calculateSubtotal(item);
+            calculateTotal();
+        });
+
+        // Quantity change
+        item.querySelector('.quantity-input').addEventListener('change', function() {
+            calculateSubtotal(item);
+            calculateTotal();
+        });
+
+        // Remove item
+        item.querySelector('.remove-item').addEventListener('click', function() {
+            if (document.querySelectorAll('.order-item').length > 1) {
+                item.remove();
+                calculateTotal();
+            } else {
+                alert('At least one item is required');
+            }
+        });
+    }
+
+    function calculateSubtotal(item) {
+        const price = parseFloat(item.querySelector('.product-select').options[
+            item.querySelector('.product-select').selectedIndex
+        ].dataset.price || '0');
+        const quantity = parseInt(item.querySelector('.quantity-input').value || '0');
+        const subtotal = price * quantity;
+        item.querySelector('.subtotal-display').value = '$' + subtotal.toFixed(2);
+    }
+
+    function calculateTotal() {
+        let total = 0;
+        document.querySelectorAll('.order-item').forEach(item => {
+            const subtotalText = item.querySelector('.subtotal-display').value;
+            if (subtotalText) {
+                total += parseFloat(subtotalText.replace('$', ''));
+            }
+        });
+        document.getElementById('total-amount').value = '$' + total.toFixed(2);
+    }
+});
+</script>
+
+<style>
+.form-section {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-actions {
+    margin-top: 2rem;
+    text-align: right;
+}
+
+.order-item {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+.remove-item {
+    margin-bottom: 0.5rem;
+}
+
+.price-display, .subtotal-display, #total-amount {
+    background: #eee;
+    padding: 0.5rem;
+    border: none;
+    width: 100%;
+}
+</style>
+{% endblock %}
