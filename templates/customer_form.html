@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+    <h1>{{ action }} Customer</h1>
+    
+    <form method="POST">
+        <div class="form-group">
+            <label for="full_name">Full Name</label>
+            <input type="text" id="full_name" name="full_name" 
+                   value="{{ customer.full_name if customer else '' }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" name="phone" 
+                   value="{{ customer.phone if customer else '' }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" 
+                   value="{{ customer.email if customer else '' }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="address">Address</label>
+            <textarea id="address" name="address">{{ customer.address if customer else '' }}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="date_of_birth">Date of Birth</label>
+            <input type="date" id="date_of_birth" name="date_of_birth" 
+                   value="{{ customer.date_of_birth if customer else '' }}">
+        </div>
+        
+        <div class="form-group">
+            <label for="skin_type">Skin Type</label>
+            <select id="skin_type" name="skin_type">
+                <option value="Oily" {% if customer and customer.skin_type == 'Oily' %}selected{% endif %}>Oily</option>
+                <option value="Dry" {% if customer and customer.skin_type == 'Dry' %}selected{% endif %}>Dry</option>
+                <option value="Combination" {% if customer and customer.skin_type == 'Combination' %}selected{% endif %}>Combination</option>
+                <option value="Normal" {% if customer and customer.skin_type == 'Normal' %}selected{% endif %}>Normal</option>
+                <option value="Sensitive" {% if customer and customer.skin_type == 'Sensitive' %}selected{% endif %}>Sensitive</option>
+            </select>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="/customers" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="date"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.form-actions {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #f0f0f0;
+    color: #333;
+    margin-left: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+}
+
+.btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+</style>
+{% endblock %}
