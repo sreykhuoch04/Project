@@ -1,0 +1,145 @@
+create database MySystem;
+
+use Mysystem;
+
+create table Customers(
+	customer_id int primary key auto_increment,
+    full_name varchar(100),
+    phone varchar(20),
+    email varchar(100),
+    address text,
+    date_of_birth date,
+    skin_type varchar(50),
+    created timestamp default current_timestamp
+);
+
+create table Products(
+	product_id int primary key auto_increment,
+    product_name varchar(100),
+    brand varchar(50),
+    category varchar(50),
+    price decimal(10,2),
+    stock_quantity int,
+    description text
+);
+
+create table Staff (
+	staff_id int primary key auto_increment,
+    full_name varchar(50),
+    role varchar(50),
+    phone varchar(20),
+    email varchar(100)
+);
+
+create table Orders (
+	order_id int primary key auto_increment,
+    customer_id int,
+    staff_id int,
+    order_date date,
+    total_amount decimal(10,2),
+    foreign key (customer_id) references Customers (customer_id),
+    foreign key (staff_id) references Staff(staff_id)
+);
+
+
+create table Order_Items (
+	order_item_id int primary key auto_increment,
+    order_id int,
+    product_id int,
+    quantity int,
+    price decimal(10,2),
+    foreign key (order_id) references Orders (order_id),
+    foreign key (product_id) references Products (product_id)
+);
+
+create table users (
+	user_id int primary key auto_increment,
+    customer_id int,
+    username varchar(50) unique,
+    password_hash varchar(255),
+    foreign key (customer_id) references Customers(customer_id)
+);
+
+create table Cart_Items (
+	cart_item_id int primary key auto_increment,
+    user_id int,
+    product_id int,
+    quantity int,
+    foreign key (user_id) references Users(user_id),
+    foreign key (product_id) references Products(product_id)
+);
+
+
+INSERT INTO Customers (full_name, phone, email, address, date_of_birth, skin_type)
+VALUES
+('Sok Dara', '012345678', 'dara@gmail.com', 'Phnom Penh', '1995-06-15', 'Oily'),
+('Chhan Mey', '098765432', 'mey@gmail.com', 'Siem Reap', '1998-09-25', 'Dry') ,
+('Vong Chanthy', '093456789', 'chanthy@gmail.com', 'Battambang', '1992-04-10', 'Combination'),
+('Long Nita', '095123456', 'nita@gmail.com', 'Kampot', '2000-11-20', 'Normal'),
+('Srey Pov', '096654321', 'pov@gmail.com', 'Takeo', '1997-07-08', 'Dry'),
+('Kim Dara', '097789012', 'kimdara@gmail.com', 'Kandal', '1990-02-18', 'Oily'),
+('Sokha Lina', '099876543', 'lina@gmail.com', 'Prey Veng', '1994-08-05', 'Sensitive'),
+('Vuthy Meng', '092123789', 'mengvuthy@gmail.com', 'Kampong Cham', '1996-12-12', 'Normal'),
+('Sok Vannak', '094321678', 'vannak@gmail.com', 'Phnom Penh', '1989-10-01', 'Combination'),
+('Ly Chanra', '093987654', 'chanra@gmail.com', 'Kep', '2001-03-22', 'Oily');
+
+INSERT INTO Staff (full_name, role, phone, email)
+VALUES
+('Nisiy Yos', 'Manager', '011223344', 'nisiy@mail.com'),
+('Chorly Ry', 'Sales Assistant', '015667788','chorly@gmail.com'),
+('Liza Sroy', 'Customer Support',  '09878689', 'liza@gmail.com'),
+('Khuoch Yory', 'Admin', '079678574', 'khuoch@gmail.com');
+
+
+INSERT INTO Products (product_name, brand, category, price, stock_quantity, description)
+VALUES
+('Hydrating Facial Cleanser', 'Skincare Co', 'Cleanser', 15.99, 50, 'Gentle cleanser for dry skin.'),
+('Oil Control Toner', 'BeautyLine', 'Toner', 12.50, 30, 'Controls excess oil and tightens pores.'),
+('Daily Moisturizer SPF 30', 'FreshSkin', 'Moisturizer', 20.00, 40, 'Lightweight moisturizer with sun protection.'),
+('3CE Velvet Lip Tint', '3CE', 'Lipstick', 10.99, 10, 'Highly pigmented velvet lip tint with a soft blur effect. Long-lasting formula with comfortable wear.'),
+('Radiance Renewal Serum', 'Freshfaced', 'Serum', 45.49, 25, 'Vitamin C serum with hyaluronic acid to brighten skin and reduce fine lines. Dermatologist tested.'),
+('Overnight Repair Cream', 'SkinRestore', 'Night Cream', 32.99, 15, 'Intensive overnight treatment with peptides and ceramides to repair skin barrier while you sleep.'),
+('Detox Clay Mask', 'PureBeauty', 'Face Mask', 18.75, 20, 'Purifying clay mask with charcoal and kaolin clay to deeply cleanse pores and absorb excess oil.');
+INSERT INTO Orders (customer_id, staff_id, order_date, total_amount)
+VALUES
+(1, 2, '2025-04-25', 31.98),
+(2, 1, '2025-04-26', 20.00);
+
+
+INSERT INTO Order_Items (order_id, product_id, quantity, price)
+VALUES
+(1, 1, 2, 15.99),
+(2, 3, 1, 20.00);
+
+select *
+from mysystem.Products
+;
+ALTER TABLE Products ADD COLUMN image VARCHAR(255);
+
+insert into accounts (account_id , staff_id , username ,password_hash , role)
+values 
+(5,5,'kaka','124khuoch','admin' )
+;
+
+
+CREATE TABLE accounts (
+    account_id INT PRIMARY KEY AUTO_INCREMENT,
+    staff_id INT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id)
+);
+
+select * 
+from mysystem.accounts
+
+;
+
+UPDATE Products
+SET image = 'images/image/Hydrating.png'
+WHERE product_id = 1;
+
+
+
