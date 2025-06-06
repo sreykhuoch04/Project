@@ -1,5 +1,18 @@
-# Project: Skincare Store Management System
+# Skincare Store Management System
 
-This project showcases a **Skincare Store Management System** built using **Flask**, a lightweight web framework.  
-While Flask is not as dynamic as Django, it is a great starting point for web development.  
-The system is connected to a **MySQL database** to store and manage data such as products, customers, orders, and more.
+This is a web application for managing a skincare store, built using **Flask** and **MySQL**.
+
+## 🔧 Features
+- Add, edit, and delete products
+- Store and manage customer orders
+- Connects with MySQL database
+
+## 🚀 Technologies
+- Python + Flask
+- HTML, CSS (in `templates/` and `static/`)
+- MySQL (via `db_config.py`)
+
+## 🖥️ How to Run
+1. Clone this repo.
+2. Run `pip install -r requirements.txt`.
+3. Start server: `python app.py`.
